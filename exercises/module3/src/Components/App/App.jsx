@@ -2,7 +2,10 @@ import { useState } from 'react'
 
 const StatisticsLine = (props) => {
     return (
-        <p>{props.text} {props.value}</p>
+        <tr>
+            <td>{props.text}</td>
+            <td>{props.value}</td>
+        </tr>
     )
 }
 
@@ -22,14 +25,16 @@ const Statistics = (props) => {
         )
     }else{
         return (
-        <div>
+            <table>
+                <tbody>
             <StatisticsLine text="good" value={props.good} />
             <StatisticsLine text="neutral" value={props.neutral} />
             <StatisticsLine text="bad" value={props.bad} />
             <StatisticsLine text="all" value={props.good + props.neutral + props.bad} />
             <StatisticsLine text="average" value={(props.good - props.bad) / (props.good + props.neutral + props.bad)} />
             <StatisticsLine text="positive" value={(props.good / (props.good + props.neutral + props.bad)) * 100 + " %"} />
-        </div>
+            </tbody>
+        </table>
         )
     }
   }
