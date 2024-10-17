@@ -1,6 +1,5 @@
 import '../../App.css'
-
-
+import personService from '../../services/persons'
 
 const PersonForm = ({ newName, newNumber, setPersons,setNewName, setNewNumber, persons }) => {
 
@@ -11,17 +10,22 @@ const PersonForm = ({ newName, newNumber, setPersons,setNewName, setNewNumber, p
       return;
     }
     const nameObject = {
-      name: newName,
-      number : newNumber
+        name: newName,
+        number: newNumber,
+        id: persons.length + 1
     }
 
     const nameExists = persons.some(person => person.name === newName)
     if (nameExists) {
       alert(`${newName} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
+      personService
+        .create(nameObject)
+        .then(response => {
+          setPersons(persons.concat(response))
+          setNewName('')
+          setNewNumber('')
+        })
     }
   }
 

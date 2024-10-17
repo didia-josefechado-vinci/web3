@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import '../../App.css'
-import axios from 'axios'
 import Filter from '../Filter/Filter'
 import Person from 'components/Persons/Persons'
 import PersonForm from 'components/PersonForm/PersonForm'
+import personService from '../../services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,14 +13,13 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then( initialPerson => {
+        setPersons(initialPerson)
       })
   }, [])
-  console.log('render', persons.length, 'persons')
+  console.log('render', persons);
 
   const personsToShow = filter ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())) : persons;
 
