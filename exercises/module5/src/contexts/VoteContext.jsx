@@ -1,32 +1,32 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 const Context = React.createContext(null);
 
 const ProviderWrapper = (props) => {
-  const [vote, setVote] = useState({ good: 0, ok: 0, bad: 0 });
+  const [opinions, setOpinions] = useState([]);
 
-  const increaseGood = () => {
-    setVote((prevVote) => ({ ...prevVote, good: prevVote.good + 1 }));
+  const addOpinion = (text) => {
+    const newOpinion = { id: uuidv4(), text, votes: 1 };
+    setOpinions((prevOpinions) => sortOpinions([...prevOpinions, newOpinion]));
   };
 
-  const increaseOK = () => {
-    setVote((prevVote) => ({ ...prevVote, ok: prevVote.ok + 1 }));
+  const voteOpinion = (id) => {
+    setOpinions((prevOpinions) => 
+      sortOpinions(prevOpinions.map(opinion => 
+        opinion.id === id ? { ...opinion, votes: opinion.votes + 1 } : opinion
+      ))
+    );
   };
 
-  const increaseBad = () => {
-    setVote((prevVote) => ({ ...prevVote, bad: prevVote.bad + 1 }));
-  };
-
-  const reset = () => {
-    setVote({ good: 0, ok: 0, bad: 0 });
+  const sortOpinions = (opinions) => {
+    return opinions.sort((a, b) => b.votes - a.votes);
   };
 
   const exposedValue = {
-    vote,
-    increaseGood,
-    increaseOK,
-    increaseBad,
-    reset,
+    opinions,
+    addOpinion,
+    voteOpinion,
   };
 
   return (
