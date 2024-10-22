@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 
-const 
-
 if (process.argv.length < 3) {
     console.log('There is no password provided')
     process.exit(1)
