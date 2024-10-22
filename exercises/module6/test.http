@@ -1,0 +1,14 @@
+@BASE_URL = http://localhost:3001/api
+
+###Get all contacts
+GET {{BASE_URL}}
+
+###Create a new contact
+POST {{BASE_URL}}
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "number": "123456789"
+}
+  
