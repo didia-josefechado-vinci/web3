@@ -8,7 +8,15 @@ app.use(express.json())
 
 app.get('/api', (request, response) => {
     Number.find({}).then(numbers => {
-        response.json(numbers)
+        if (numbers.length !== 0) {
+            response.json(numbers)
+        }else{
+            response.status(404).send({error: 'No numbers found'})
+        }
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(500).end()
     })
 })
 
@@ -29,6 +37,17 @@ app.post('/api', (request, response) => {
 
     number.save().then(savedNumber => {
         response.json(savedNumber)
+    })
+})
+
+app.delete('/api/:id', (request, response) => {
+    Number.findByIdAndDelete(request.params.id)
+    .then(result => {
+        response.status(204).end()
+    })
+    .catch(error => {
+        console.log(error)
+        response.status(400).send({error: 'malformatted id'})
     })
 })
 

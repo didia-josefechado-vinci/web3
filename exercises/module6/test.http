@@ -11,4 +11,8 @@ Content-Type: application/json
     "name": "John Doe",
     "number": "123456789"
 }
+
+###Delete a contact
+DELETE {{BASE_URL}}/6717c7d2babfe4c12dbc6d20
+
   
