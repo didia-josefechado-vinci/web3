@@ -6,7 +6,7 @@ const app = express()
 
 app.use(express.json())
 
-app.get('/api', (request, response) => {
+app.get('/api', (request, response,next) => {
     Number.find({}).then(numbers => {
         if (numbers.length !== 0) {
             response.json(numbers)
@@ -14,13 +14,10 @@ app.get('/api', (request, response) => {
             response.status(404).send({error: 'No numbers found'})
         }
     })
-    .catch(error => {
-      console.log(error)
-      response.status(500).end()
-    })
+    .catch(error => next(error))
 })
 
-app.post('/api', (request, response) => {
+app.post('/api', (request, response,next) => {
 
     const body = request.body
     console.log(body);
@@ -38,20 +35,34 @@ app.post('/api', (request, response) => {
     number.save().then(savedNumber => {
         response.json(savedNumber)
     })
+    .catch(error => next(error))
 })
 
-app.delete('/api/:id', (request, response) => {
+app.delete('/api/:id', (request, response,next) => {
     Number.findByIdAndDelete(request.params.id)
     .then(result => {
-        response.status(204).end()
+        if(result){
+            response.status(204).end()
+        }else{
+            response.status(404).send({error: 'No number found'})
+        }
     })
-    .catch(error => {
-        console.log(error)
-        response.status(400).send({error: 'malformatted id'})
-    })
+    .catch(error => next(error))
 })
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+app.use(errorHandler)

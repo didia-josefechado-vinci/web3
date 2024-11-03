@@ -13,6 +13,7 @@ Content-Type: application/json
 }
 
 ###Delete a contact
-DELETE {{BASE_URL}}/6717c7d2babfe4c12dbc6d20
+DELETE {{BASE_URL}}/672752509bcca2f3fbda2397
 
-  
+### Delete a contact with an invalid id to trigger malformatted id error
+DELETE {{BASE_URL}}/invalid-id
