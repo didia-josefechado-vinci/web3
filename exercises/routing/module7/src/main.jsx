@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App, { CinemaPage, MovieListPage, HomePage } from "../src/components/App/App";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import AddMoviePage from "components/AddMovieForm/AddMoviePage";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,11 @@ const router = createBrowserRouter([
       {
         path: "movieList",
         element: <MovieListPage />,
-      }
+      },
+      {
+        path: "addMovie",
+        element: <AddMoviePage />,
+      },
     ],
   },
 ]);
